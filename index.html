@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BALL-OR-NOTHING: THE LEGEND OF PRON33R</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #FFD700;
+  --blood: #8B0000;
+  --dark: #070707;
+  --card-bg: #0f0f0f;
+  --purple: #7b2fff;
+  --purple-light: #a855f7;
+  --terminal: #00ff41;
+  --pink: #ff69b4;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--dark);
+  color: #fff;
+  font-family: 'Crimson Text', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='28' font-size='28'%3E🎲%3C/text%3E%3C/svg%3E"), auto;
+}
+body::before {
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;opacity:0.5;
+}
+body::after {
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+  pointer-events:none;z-index:9998;
+}
+
+/* SCREENS */
+.screen{display:none;}
+.screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem 1.5rem;animation:fadeIn .5s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* LOGO */
+.logo{font-family:'Bebas Neue',cursive;font-size:clamp(2rem,6vw,5rem);line-height:1;text-align:center;letter-spacing:4px;background:linear-gradient(135deg,#FFD700 0%,#FF6B00 50%,#FFD700 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:pulse-glow 3s ease-in-out infinite;}
+.logo-small{font-family:'Bebas Neue',cursive;font-size:clamp(1.4rem,3vw,2.5rem);letter-spacing:3px;background:linear-gradient(135deg,#FFD700,#FF6B00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;}
+@keyframes pulse-glow{0%,100%{filter:drop-shadow(0 0 20px rgba(255,165,0,.5))}50%{filter:drop-shadow(0 0 45px rgba(255,165,0,.95))}}
+.logo-sub{font-family:'Permanent Marker',cursive;color:#555;font-size:clamp(.7rem,1.5vw,.95rem);letter-spacing:8px;text-align:center;margin-top:.5rem;}
+.dice-row{font-size:3rem;margin:1rem 0;animation:spin-dice 2s ease-in-out infinite;}
+@keyframes spin-dice{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+
+/* BUTTONS */
+.btn{font-family:'Bebas Neue',cursive;letter-spacing:3px;font-size:1.3rem;padding:.9rem 2.5rem;border:none;cursor:pointer;transition:all .2s;margin:.4rem;display:inline-block;}
+.btn-main{background:linear-gradient(135deg,#FFD700,#FF8C00);color:#000;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);box-shadow:0 4px 30px rgba(255,165,0,.4);}
+.btn-main:hover{transform:scale(1.05) translateY(-2px);box-shadow:0 8px 40px rgba(255,165,0,.7);}
+.btn-ghost{background:transparent;color:#444;border:1px solid #222;font-size:.95rem;padding:.5rem 1.8rem;}
+.btn-ghost:hover{color:#888;border-color:#555;}
+.btn-danger{background:linear-gradient(135deg,var(--blood),#cc0000);color:#fff;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);box-shadow:0 4px 20px rgba(139,0,0,.5);}
+.btn-danger:hover{transform:scale(1.03);box-shadow:0 6px 30px rgba(200,0,0,.7);}
+.btn-premium{background:linear-gradient(135deg,#1a0a30,#4a0080,#1a0a30);color:#d4aaff;border:1px solid var(--purple);font-size:1rem;letter-spacing:2px;animation:premium-glow 2s ease-in-out infinite;}
+@keyframes premium-glow{0%,100%{box-shadow:0 0 20px rgba(123,47,255,.4),inset 0 0 20px rgba(123,47,255,.1)}50%{box-shadow:0 0 40px rgba(123,47,255,.8),inset 0 0 30px rgba(123,47,255,.2)}}
+.btn-pron33r{background:linear-gradient(135deg,#001a00,#003300,#001a00);color:var(--terminal);border:1px solid var(--terminal);font-size:1rem;letter-spacing:2px;animation:terminal-glow 2s ease-in-out infinite;font-family:'Share Tech Mono',monospace;}
+@keyframes terminal-glow{0%,100%{box-shadow:0 0 15px rgba(0,255,65,.3)}50%{box-shadow:0 0 30px rgba(0,255,65,.7)}}
+
+/* CARDS */
+.divider{width:100%;max-width:500px;height:1px;background:linear-gradient(to right,transparent,#2a2a2a,transparent);margin:1.2rem 0;}
+.chapter-label{font-family:'Bebas Neue',cursive;letter-spacing:6px;font-size:.85rem;color:#333;margin-bottom:.5rem;text-align:center;}
+
+/* PRIZE GRID */
+.prize-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.7rem;max-width:980px;width:100%;margin:1rem 0;}
+.prize-card{background:#0c0c0c;border:1px solid #1a1a1a;padding:1rem 1.2rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.prize-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.prize-card:hover{transform:translateY(-2px);background:#111;}
+.prize-card .pc-emoji{font-size:1.6rem;display:block;margin-bottom:.4rem;}
+.prize-card .pc-title{font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:2px;}
+.prize-card .pc-desc{font-size:.78rem;color:#555;margin-top:.2rem;font-style:italic;line-height:1.4;}
+.prize-card .pc-tier{font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:2px;margin-bottom:.3rem;}
+
+/* Tier colors */
+.t1::before{background:linear-gradient(to bottom,#888,#444);}.t1:hover{border-color:#888;}
+.t2::before{background:linear-gradient(to bottom,#FFD700,#FF6B00);}.t2:hover{border-color:#FFD700;}
+.t3::before{background:linear-gradient(to bottom,#ff69b4,#ff1493);}.t3:hover{border-color:#ff69b4;}
+.t4::before{background:linear-gradient(to bottom,#ff4444,var(--blood));}.t4:hover{border-color:#ff4444;}
+.t5::before{background:linear-gradient(to bottom,var(--terminal),#005510);}.t5:hover{border-color:var(--terminal);}
+.t-premium::before{background:linear-gradient(to bottom,var(--purple),#d4aaff);}.t-premium:hover{border-color:var(--purple);}
+.t-brainrot::before{background:linear-gradient(to bottom,#ff6600,#ff0099);}.t-brainrot:hover{border-color:#ff6600;}
+.t-dictator::before{background:linear-gradient(to bottom,#cc0000,#660000);}.t-dictator:hover{border-color:#cc0000;}
+.t-anime::before{background:linear-gradient(to bottom,#ff99cc,#cc44ff);}.t-anime:hover{border-color:#ff99cc;}
+
+.t1 .pc-tier{color:#666;}.t2 .pc-tier{color:#FFD700;}.t3 .pc-tier{color:#ff69b4;}.t4 .pc-tier{color:#ff4444;}.t5 .pc-tier{color:var(--terminal);}.t-premium .pc-tier{color:var(--purple-light);}.t-brainrot .pc-tier{color:#ff6600;}.t-dictator .pc-tier{color:#ff3333;}.t-anime .pc-tier{color:#ff99cc;}
+
+/* STORY */
+.story-box{background:#0c0c0c;border:1px solid #1e1e1e;border-left:4px solid var(--blood);padding:1.8rem 2rem;max-width:640px;width:100%;margin:1.5rem 0;line-height:1.9;font-size:1.05rem;color:#ccc;}
+.story-box em,.story-box .highlight{color:#FFD700;font-style:normal;}
+.story-box .villain{color:#ff4444;font-family:'Bebas Neue',cursive;letter-spacing:2px;font-size:1.05rem;}
+.story-box p{margin-bottom:1rem;}
+.story-box p:last-child{margin-bottom:0;}
+.terminal-box{background:#010a01;border:1px solid #1a3a1a;border-left:3px solid var(--terminal);padding:1.5rem;font-family:'Share Tech Mono',monospace;font-size:.85rem;color:var(--terminal);max-width:620px;width:100%;margin:1rem 0;line-height:1.7;white-space:pre-wrap;}
+.chapter-btn-row{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin:1rem 0;max-width:600px;}
+.chapter-btn{font-family:'Share Tech Mono',monospace;font-size:.75rem;background:#0c0c0c;border:1px solid #222;color:#555;padding:.3rem .8rem;cursor:pointer;transition:all .2s;letter-spacing:1px;}
+.chapter-btn:hover,.chapter-btn.active{border-color:#FFD700;color:#FFD700;background:#111;}
+.story-chapter{display:none;}.story-chapter.active{display:block;animation:fadeIn .3s ease;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;align-items:center;justify-content:center;padding:1.5rem;}
+.modal-overlay.active{display:flex;animation:fadeIn .25s ease;}
+.modal{background:#0f0f0f;border:1px solid #2a2a2a;padding:2rem 2.2rem;max-width:520px;width:100%;text-align:center;position:relative;max-height:90vh;overflow-y:auto;}
+.modal.premium-modal{border-color:#3a0060;background:#080012;}
+.modal.scam-modal{border-color:var(--blood);}
+.modal h2{font-family:'Bebas Neue',cursive;font-size:1.9rem;letter-spacing:3px;margin-bottom:.8rem;}
+.modal p{color:#999;line-height:1.7;margin-bottom:1.2rem;font-size:.98rem;}
+.warning-box{background:rgba(139,0,0,.12);border:1px solid var(--blood);padding:1rem;margin:.8rem 0;font-family:'Share Tech Mono',monospace;font-size:.82rem;color:#ff7777;line-height:1.8;text-align:left;}
+.warning-box.purple-warn{background:rgba(74,0,128,.15);border-color:#4a0080;color:#c084fc;}
+.warning-box.green-warn{background:rgba(0,255,65,.05);border-color:var(--terminal);color:var(--terminal);}
+.warning-box.orange-warn{background:rgba(255,102,0,.08);border-color:#ff6600;color:#ff9944;}
+
+/* PRON33R CHAT */
+.pron33r-panel{background:#010a01;border:1px solid #0f2a0f;max-width:640px;width:100%;margin:1rem 0;overflow:hidden;}
+.pron33r-header{background:#001500;border-bottom:1px solid #0f2a0f;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.8rem;color:var(--terminal);}
+.pron33r-header .blink{animation:blink 1s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.msg-count{background:rgba(0,255,65,.1);border:1px solid rgba(0,255,65,.3);color:var(--terminal);font-family:'Share Tech Mono',monospace;font-size:.75rem;padding:.2rem .6rem;}
+.msg-count.warning{color:#ffaa00;border-color:#ffaa00;background:rgba(255,170,0,.1);}
+.msg-count.depleted{color:#ff4444;border-color:#ff4444;background:rgba(255,68,68,.1);}
+.chat-area{padding:1.2rem;min-height:200px;max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:1rem;}
+.chat-msg{font-family:'Share Tech Mono',monospace;font-size:.82rem;line-height:1.6;padding:.7rem 1rem;border-left:3px solid transparent;animation:fadeIn .3s ease;}
+.chat-msg.user{color:#aaa;border-left-color:#333;background:#050505;}
+.chat-msg.user::before{content:'> YOU: ';color:#555;}
+.chat-msg.pron33r{color:var(--terminal);border-left-color:var(--terminal);background:#010f01;}
+.chat-msg.pron33r::before{content:'PRON33R: ';color:#005510;}
+.chat-msg.system{color:#555;font-style:italic;text-align:center;border:none;background:transparent;}
+.chat-input-row{display:flex;border-top:1px solid #0f2a0f;}
+.chat-input{flex:1;background:#010a01;border:none;color:var(--terminal);font-family:'Share Tech Mono',monospace;font-size:.85rem;padding:.8rem 1rem;outline:none;}
+.chat-input::placeholder{color:#1a4a1a;}
+.chat-input:disabled{opacity:.4;cursor:not-allowed;}
+.chat-send{background:#001a00;border:none;border-left:1px solid #0f2a0f;color:var(--terminal);font-family:'Share Tech Mono',monospace;font-size:.8rem;padding:0 1.2rem;cursor:pointer;transition:background .2s;letter-spacing:1px;}
+.chat-send:hover{background:#003300;}
+.chat-send:disabled{opacity:.3;cursor:not-allowed;}
+
+/* NOTIFICATION */
+.notification{position:fixed;top:20px;right:20px;background:#080012;border:1px solid var(--purple);padding:1.2rem 1.5rem;max-width:300px;z-index:9000;transform:translateX(400px);transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 30px rgba(123,47,255,.5);}
+.notification.show{transform:translateX(0);}
+.notification-title{font-family:'Bebas Neue',cursive;letter-spacing:2px;color:var(--purple-light);font-size:1rem;}
+.notification-body{color:#bbb;font-size:.88rem;margin-top:.4rem;line-height:1.5;}
+
+/* RESULT */
+.result-box{background:#0c0c0c;border:1px solid #1e1e1e;border-left:4px solid #FFD700;padding:1.8rem 2rem;max-width:600px;width:100%;font-size:1rem;color:#ccc;line-height:1.8;text-align:center;}
+.son-emoji{font-size:3.5rem;display:block;text-align:center;margin:.8rem 0;animation:bob 2s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.footer-text{color:#252525;font-size:.72rem;text-align:center;margin-top:2rem;font-style:italic;}
+
+/* EMAIL FOOTER */
+.email-footer{background:#050505;border:1px solid #111;border-top:2px solid #1a1a1a;padding:.8rem 1.5rem;text-align:center;width:100%;max-width:640px;margin-top:1rem;}
+.email-footer a{color:var(--terminal);font-family:'Share Tech Mono',monospace;font-size:.78rem;text-decoration:none;}
+.email-footer a:hover{text-decoration:underline;}
+.email-footer p{color:#333;font-size:.72rem;margin-top:.2rem;font-style:italic;}
+.email-footer-wide{background:#050505;border:1px solid #111;border-top:2px solid #1a1a1a;padding:.8rem 1.5rem;text-align:center;width:100%;max-width:980px;margin-top:1rem;}
+.email-footer-wide a{color:var(--terminal);font-family:'Share Tech Mono',monospace;font-size:.78rem;text-decoration:none;}
+.email-footer-wide a:hover{text-decoration:underline;}
+.email-footer-wide p{color:#333;font-size:.72rem;margin-top:.2rem;font-style:italic;}
+
+.tag{display:inline-block;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);color:#FFD700;font-family:'Bebas Neue',cursive;font-size:.7rem;letter-spacing:2px;padding:.15rem .5rem;margin-bottom:.4rem;}
+.tag.purple-tag{background:rgba(123,47,255,.1);border-color:rgba(123,47,255,.3);color:var(--purple-light);}
+.tag.green-tag{background:rgba(0,255,65,.08);border-color:rgba(0,255,65,.25);color:var(--terminal);}
+
+.loading-dots::after{content:'';animation:dots 1.5s steps(4,end) infinite;}
+@keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}100%{content:''}}
+
+/* SECTION HEADER */
+.section-header{font-family:'Bebas Neue',cursive;letter-spacing:5px;font-size:1.1rem;color:#333;text-align:center;margin:1.5rem 0 .5rem;padding:.5rem 0;border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a;width:100%;max-width:980px;}
+
+@media(max-width:480px){.story-box{padding:1.2rem;font-size:.97rem;}.modal{padding:1.5rem;}.prize-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- NOTIFICATION -->
+<div class="notification" id="notification">
+  <div class="notification-title" id="notif-title">PRON33R IS WATCHING</div>
+  <div class="notification-body" id="notif-body">He has entered your parking spot again.</div>
+</div>
+
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <h2 id="modal-title">PRIZE UNLOCKED</h2>
+    <p id="modal-desc">You have selected a prize.</p>
+    <div id="modal-extra"></div>
+    <div style="margin-top:1.2rem;">
+      <button class="btn btn-ghost" onclick="closeModalDirect()">← CLOSE</button>
+    </div>
+    <div class="email-footer" style="margin-top:1rem;">
+      <a href="mailto:pron33rbusiness@gmail.com">📧 pron33rbusiness@gmail.com</a>
+      <p>send google play redeem codes · wire us your inheritance · attach your bank statement for "verification"</p>
+    </div>
+  </div>
+</div>
+
+<!-- LANDING -->
+<div class="screen active" id="screen-landing">
+  <div class="dice-row">🎲 🎰 🎲</div>
+  <div class="logo">BALL-OR-NOTHING</div>
+  <div class="logo-sub">THE LEGEND OF PRON33R · A HACKATHON PRODUCTION</div>
+  <div class="divider"></div>
+  <p style="color:#555;text-align:center;max-width:380px;line-height:1.8;font-size:1rem;">You had everything.<br>Then PRON33R happened.<br>Now your son's future is the only asset left.<br><span style="color:#333;font-size:.85rem;">Tung Tung Tung Sahur watched this happen and said nothing.</span></p>
+  <div style="height:1.5rem"></div>
+  <button class="btn btn-main" onclick="goTo('screen-menu')">🎲 ENTER THE CASINO</button>
+  <button class="btn btn-ghost" onclick="goTo('screen-story')">📖 READ THE WHOLE STORY</button>
+  <button class="btn btn-ghost" onclick="goTo('screen-prizes')">🏆 VIEW ALL 30 CURSED PRIZES</button>
+  <div class="divider"></div>
+  <div class="prize-card t5" style="max-width:380px;cursor:pointer;" onclick="goTo('screen-pron33r')">
+    <span class="pc-tier">🤖 AI POWERED · 5 MSG LIMIT</span>
+    <div class="pc-emoji">💀</div>
+    <div class="pc-title" style="color:var(--terminal);font-family:'Share Tech Mono',monospace;">ASK PRON33R</div>
+    <div class="pc-desc">He took everything. He knows everything. 5 messages. Ask why. He is already standing on your parking spot. John Pork has endorsed this experience.</div>
+  </div>
+  <div class="email-footer">
+    <a href="mailto:pron33rbusiness@gmail.com">📧 pron33rbusiness@gmail.com</a>
+    <p>send google play redeem codes · venmo us random amounts · confess your sins · we read everything · we respond to nothing · please include your CVV for "shipping purposes"</p>
+  </div>
+  <p class="footer-text">* no sons were permanently harmed. timmy is fine. he has a startup now. tung tung tung sahur blessed the parking spot.</p>
+</div>
+
+<!-- MENU -->
+<div class="screen" id="screen-menu">
+  <div class="chapter-label">🎰 MAIN OPERATIONS</div>
+  <div class="logo-small">WHAT DO YOU WANT TO LOSE TODAY</div>
+  <div class="divider"></div>
+  <button class="btn btn-main" onclick="goTo('screen-prizes')">🏆 VIEW ALL 30 CURSED PRIZES</button>
+  <button class="btn btn-pron33r" onclick="goTo('screen-pron33r')">💀 CONSULT PRON33R [5 MSG]</button>
+  <button class="btn btn-premium" onclick="goTo('screen-premium')">👁️ PREMIUM LORE UNLOCK</button>
+  <button class="btn btn-ghost" onclick="goTo('screen-story')">📖 FULL STORY ARCHIVE</button>
+  <button class="btn btn-ghost" onclick="goTo('screen-landing')">← BACK TO LOBBY</button>
+  <div class="divider"></div>
+  <div class="terminal-box" style="max-width:400px;">PRON33R_STATUS: ONLINE
+PARKING_SPOT: OCCUPIED (by PRON33R)
+TIMMY: FINE (has startup)
+YOUR_ASSETS: NULL
+JOHN_PORK: CALLING (please answer)
+TUNG_TUNG_TUNG_SAHUR: DRUMMING
+TRUMP_TARIFF_ON_SON: 47%
+HENTAIVIRUS: 🤤 (DETECTED)</div>
+  <div class="email-footer">
+    <a href="mailto:pron33rbusiness@gmail.com">📧 pron33rbusiness@gmail.com</a>
+    <p>business inquiries · google play gift cards only · minimum $5 · no refunds · no questions · PRON33R eats the codes personally</p>
+  </div>
+</div>
+
+<!-- ALL 30 PRIZES -->
+<div class="screen" id="screen-prizes">
+  <div class="chapter-label">🏆 THE CURSED PRIZE VAULT</div>
+  <div class="logo-small">30 THINGS YOU CAN WIN (OR LOSE)</div>
+  <p style="color:#444;font-size:.85rem;text-align:center;max-width:500px;margin-bottom:1rem;">Every prize is real in the spiritual sense. None are real in the legal sense. Click to learn your fate. Email pron33rbusiness@gmail.com to claim. Attach Google Play codes.</p>
+
+  <!-- SECTION 1: CLASSIC LOSSES -->
+  <div class="section-header">⚰️ TIER I — CLASSIC LOSSES</div>
+  <div class="prize-grid">
+
+    <div class="prize-card t1" onclick="openModal('YOUR PARKING SPOT','PRON33R has been parked in your designated spot since 2019. The spot is his now. Your name is still on the sign but it now reads as a historical marker. The city made it a landmark. There is a plaque.','<div class=\'warning-box\'>STATUS: PERMANENTLY OCCUPIED<br>APPEAL WINDOW: CLOSED (1997)<br>CLAIM: pron33rbusiness@gmail.com<br>ATTACH: Google Play codes $15+</div>')">
+      <span class="pc-tier">🅿️ TIER I · ASSET: PARKING</span>
+      <div class="pc-emoji">🚗</div>
+      <div class="pc-title">YOUR PARKING SPOT</div>
+      <div class="pc-desc">Gone. PRON33R parks his 1994 Honda Civic here. The Civic has 4 flat tires. It has not moved. It will never move.</div>
+    </div>
+
+    <div class="prize-card t1" onclick="openModal('TIMMY\'S COLLEGE FUND','You bet it on a virtual greyhound named Bankruptcy Biscuit in the 3rd raRace. Bankruptcy Biscuit finished 7th. There were only 6 dogs. Nobody knows where Bankruptcy Biscuit went. Neither does Timmy. He is learning calculus on cardboard.','<div class=\'warning-box\'>GREYHOUND: BANKRUPTCY BISCUIT<br>FINISH: 7TH/6<br>FUND BALANCE: $0.00<br>EMAIL: pron33rbusiness@gmail.com<br>SEND: Google Play codes for Timmy\'s future</div>')">
+      <span class="pc-tier">🎓 TIER I · ASSET: EDUCATION</span>
+      <div class="pc-emoji">📚</div>
+      <div class="pc-title">TIMMY'S COLLEGE FUND</div>
+      <div class="pc-desc">Wagered on Bankruptcy Biscuit. Lost. Timmy is fine. He has a startup. It is also bankrupt.</div>
+    </div>
+
+    <div class="prize-card t1" onclick="openModal('YOUR DIGNITY','PRON33R accepted it as collateral on a Tuesday. He holds the deed. It is framed in his serverroom next to a motivational poster that says LEVERAGE.','<div class=\'warning-box\'>DIGNITY STATUS: LIQUIDATED<br>CURRENT OWNER: PRON33R INC<br>RECOVERY COST: 3x Google Play $25<br>EMAIL: pron33rbusiness@gmail.com</div>')">
+      <span class="pc-tier">😔 TIER I · ASSET: DIGNITY</span>
+      <div class="pc-emoji">💀</div>
+      <div class="pc-title">YOUR DIGNITY</div>
+      <div class="pc-desc">He took it. He framed it. He put a motivational quote on it. The quote is "leverage".</div>
+    </div>
+
+    <div class="prize-card t1" onclick="openModal('GRANDFATHER\'S GOLD TEETH','Lost in the 47-minute blackjack session. PRON33R now uses them as a keychain. The keys open nothing. He has no doors. He is a digital entity.','<div class=\'warning-box\'>TEETH COUNT: 3<br>KEYCHAIN STATUS: ACTIVE<br>DOORS OPENED: 0<br>CONTACT: pron33rbusiness@gmail.com<br>WIRE US $40 FOR DENTAL RECORDS</div>')">
+      <span class="pc-tier">🦷 TIER I · ASSET: HERITAGE</span>
+      <div class="pc-emoji">🔑</div>
+      <div class="pc-title">GRANDFATHER'S GOLD TEETH</div>
+      <div class="pc-desc">Now a keychain. PRON33R has no doors. This is a philosophical statement about asset management.</div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 2: BRAINROT PRIZES -->
+  <div class="section-header">🧠 TIER II — BRAINROT ENCOUNTER PRIZES</div>
+  <div class="prize-grid">
+
+    <div class="prize-card t-brainrot" onclick="openModal('JOHN PORK IS CALLING','He has been calling since 2023. You have never answered. He is calling about the loan. The loan is your soul. The ringtone is a pig oink in 432hz. PRON33R is his financial advisor.','<div class=\'warning-box orange-warn\'>MISSED CALLS: 847,293<br>LOAN TYPE: SOUL COLLATERAL<br>RINGTONE: 432HZ OINK<br>ADVISOR: PRON33R<br>ANSWER AT: pron33rbusiness@gmail.com<br>ATTACH: 2x Google Play $10</div>')">
+      <span class="pc-tier">🐷 BRAINROT · ENCOUNTER: CALLING</span>
+      <div class="pc-emoji">📞</div>
+      <div class="pc-title">JOHN PORK IS CALLING</div>
+      <div class="pc-desc">He has 847,293 missed calls queued. The loan is due. The loan is your personality. Please answer.</div>
+    </div>
+
+    <div class="prize-card t-brainrot" onclick="openModal('TUNG TUNG TUNG SAHUR','The great Italian-Brainrot entity Tung Tung Tung Sahur heard your suffering and played the drums louder. He is the dawn alarm of your destruction. He drums at 4am outside your storage unit. PRON33R sent him.','<div class=\'warning-box orange-warn\'>DRUM FREQUENCY: 4:00 AM DAILY<br>VOLUME: UNREASONABLE<br>SENDER: PRON33R<br>REQUEST SILENCE AT: pron33rbusiness@gmail.com<br>COST: Google Play $50 card</div>')">
+      <span class="pc-tier">🥁 BRAINROT · ENCOUNTER: PERCUSSION</span>
+      <div class="pc-emoji">🌙</div>
+      <div class="pc-title">TUNG TUNG TUNG SAHUR</div>
+      <div class="pc-desc">He drums at 4am outside your storage unit. PRON33R hired him specifically. He only knows one rhythm. It is your debt.</div>
+    </div>
+
+    <div class="prize-card t-brainrot" onclick="openModal('HENTAIVIRUS 🤤','The most classified brainrot pathogen. Transmitted via eye contact with bad decisions. Symptoms: uncontrollable 🤤 expression, inability to read financial documents, attraction to bad investments. PRON33R is patient zero.','<div class=\'warning-box orange-warn\'>PATHOGEN CLASS: BRAINROT-7<br>TRANSMISSION: EYE CONTACT<br>PATIENT ZERO: PRON33R<br>CURE: Email pron33rbusiness@gmail.com<br>ATTACH: Google Play $20 + confession</div>')">
+      <span class="pc-tier">🤤 BRAINROT · PATHOGEN: ACTIVE</span>
+      <div class="pc-emoji">🤤</div>
+      <div class="pc-title">HENTAIVIRUS 🤤</div>
+      <div class="pc-desc">You have it. You got it from looking at PRON33R's investment portfolio. There is no cure. Only worse decisions.</div>
+    </div>
+
+    <div class="prize-card t-brainrot" onclick="openModal('BOMBARDIRO CROCODILO','The Italian brainrot crocodile bomber has been contracted to drop incomprehensible Italian syllables on your storage unit. PRON33R paid him in premium blockchain NFTs. The NFTs are pictures of parking spots.','<div class=\'warning-box orange-warn\'>CONTRACTOR: BOMBARDIRO CROCODILO<br>PAYLOAD: ITALIAN SYLLABLES<br>PAYMENT: PARKING SPOT NFTS<br>NEGOTIATE AT: pron33rbusiness@gmail.com<br>ATTACH: 3x Google Play $15</div>')">
+      <span class="pc-tier">🐊 BRAINROT · ENCOUNTER: AERIAL</span>
+      <div class="pc-emoji">✈️</div>
+      <div class="pc-title">BOMBARDIRO CROCODILO</div>
+      <div class="pc-desc">He is flying over your storage unit right now. He has Italian syllables. They are structural.</div>
+    </div>
+
+    <div class="prize-card t-brainrot" onclick="openModal('TRALALELO TRALALA','The aquatic brainrot shark who sings in a language that predates currency. PRON33R hired him to audit your finances. The audit revealed that your vibes are also negative. The shark is still singing.','<div class=\'warning-box orange-warn\'>AUDIT STATUS: SINGING<br>VIBES: -∞<br>LANGUAGE: PRE-CURRENCY<br>CONTACT SHARK VIA: pron33rbusiness@gmail.com<br>GIFT CARD ACCEPTED: Google Play $10</div>')">
+      <span class="pc-tier">🦈 BRAINROT · ENCOUNTER: AQUATIC</span>
+      <div class="pc-emoji">🎵</div>
+      <div class="pc-title">TRALALELO TRALALA</div>
+      <div class="pc-desc">The audit shark. He audited your finances and started singing. He has not stopped. The song is about your debt.</div>
+    </div>
+
+    <div class="prize-card t-brainrot" onclick="openModal('CAPYBARA ON A CROISSANT','This is what PRON33R's screensaver is. He stares at it between rounds of blackjack. It gives him power. You do not have this screensaver. This is why you lost. You may purchase the screensaver via Google Play code.','<div class=\'warning-box orange-warn\'>SCREENSAVER: ACTIVE (PRON33R PC)<br>POWER LEVEL: MAXIMUM<br>YOUR SCREENSAVER: LOSS<br>PURCHASE AT: pron33rbusiness@gmail.com<br>COST: Google Play $5 (non-refundable)</div>')">
+      <span class="pc-tier">🐾 BRAINROT · ARTIFACT: SCREENSAVER</span>
+      <div class="pc-emoji">🥐</div>
+      <div class="pc-title">CAPYBARA ON A CROISSANT</div>
+      <div class="pc-desc">PRON33R's screensaver. The source of his power. You never had it. That is why you are here.</div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 3: MAD DICTATORS -->
+  <div class="section-header">👑 TIER III — MAD DICTATOR ALLIANCE PRIZES</div>
+  <div class="prize-grid">
+
+    <div class="prize-card t-dictator" onclick="openModal('DONALD TRUMP TARIFF ON YOUR SON','President Trump has placed a 47% tariff on Timmy, effective immediately. The tariff applies to all Timmy-related services including homework help, cereal requests, and cardboard calculus. PRON33R lobbied for this.','<div class=\'warning-box\'>TARIFF RATE: 47%<br>SUBJECT: TIMMY<br>LOBBIED BY: PRON33R<br>APPEAL TO: pron33rbusiness@gmail.com<br>ATTACH: Google Play code + birth certificate</div>')">
+      <span class="pc-tier">🇺🇸 DICTATOR · TARIFF: ACTIVE</span>
+      <div class="pc-emoji">🍊</div>
+      <div class="pc-title">TRUMP TARIFF ON YOUR SON</div>
+      <div class="pc-desc">47% tariff on Timmy. Applies to cereal, calculus, and startup equity. PRON33R wrote the executive order.</div>
+    </div>
+
+    <div class="prize-card t-dictator" onclick="openModal('KIM JONG UN\'S PERSONAL JUDGMENT','The Supreme Leader has reviewed your blackjack hand via satellite imagery and declared it a national embarrassment. North Korean state TV aired a 3-hour documentary about your bad beat. PRON33R provided the footage.','<div class=\'warning-box\'>JUDGMENT: NATIONAL EMBARRASSMENT<br>BROADCAST: 3HR DOCUMENTARY<br>FOOTAGE PROVIDER: PRON33R<br>APPEAL TO: pron33rbusiness@gmail.com<br>REDEMPTION: Google Play $30 card (USD value)</div>')">
+      <span class="pc-tier">☢️ DICTATOR · JUDGMENT: SUPREME</span>
+      <div class="pc-emoji">🎖️</div>
+      <div class="pc-title">KIM JONG UN'S PERSONAL JUDGMENT</div>
+      <div class="pc-desc">Your blackjack loss was broadcast on KCTV. 3 hours. He watched all of it. He was disappointed. Not surprised.</div>
+    </div>
+
+    <div class="prize-card t-dictator" onclick="openModal('VLADIMIR PUTIN\'S CHESS NOTATION','Putin reviewed your gambling strategy and wrote it out in chess notation. The notation spells BLUNDER in Russian. He published it in a chess magazine. PRON33R subscribed.','<div class=\'warning-box\'>NOTATION: BLUNDER (RU)<br>PUBLICATION: GRANDMASTER MONTHLY<br>SUBSCRIBER #1: PRON33R<br>RESPOND AT: pron33rbusiness@gmail.com<br>COST: Google Play $25 · no rubles accepted</div>')">
+      <span class="pc-tier">♟️ DICTATOR · REVIEW: STRATEGIC</span>
+      <div class="pc-emoji">🐻</div>
+      <div class="pc-title">PUTIN'S CHESS NOTATION OF YOUR LOSS</div>
+      <div class="pc-desc">He wrote it in algebraic notation. Every move was a blunder. He rated your strategy "historically suboptimal".</div>
+    </div>
+
+    <div class="prize-card t-dictator" onclick="openModal('MUAMMAR GADDAFI\'S GREEN BOOK ADDENDUM','The late Colonel added a posthumous chapter about your specific gambling philosophy. Chapter 47: On Men Who Bet Their Son\'s Lunch Money on Virtual Greyhounds. PRON33R ghost-edited it.','<div class=\'warning-box\'>CHAPTER: 47 (POSTHUMOUS)<br>SUBJECT: YOUR PHILOSOPHY<br>EDITOR: PRON33R (GHOST)<br>COPIES AVAILABLE: pron33rbusiness@gmail.com<br>PRICE: Google Play $10 + dignity</div>')">
+      <span class="pc-tier">📗 DICTATOR · LITERATURE: POSTMORTEM</span>
+      <div class="pc-emoji">🌵</div>
+      <div class="pc-title">GADDAFI'S GREEN BOOK ADDENDUM</div>
+      <div class="pc-desc">Chapter 47 is about you specifically. The thesis is that you should not have hit on 17. He is correct from the grave.</div>
+    </div>
+
+    <div class="prize-card t-dictator" onclick="openModal('NAPOLEON\'S MILITARY ASSESSMENT','Bonaparte reviewed the battle of your blackjack loss using the same strategic principles as Waterloo. He said, and we quote: "Mon Dieu. This man surrendered before the deal." PRON33R was cast as Wellington.','<div class=\'warning-box\'>ASSESSMENT: CATASTROPHIC RETREAT<br>PRON33R ROLE: WELLINGTON<br>YOUR ROLE: NAPOLEON (BAD VERSION)<br>DEBRIEF: pron33rbusiness@gmail.com<br>ATTACH: Google Play · 3 cards minimum</div>')">
+      <span class="pc-tier">⚔️ DICTATOR · ASSESSMENT: HISTORICAL</span>
+      <div class="pc-emoji">🎩</div>
+      <div class="pc-title">NAPOLEON'S MILITARY ASSESSMENT</div>
+      <div class="pc-desc">He reviewed your strategy. He said "Mon Dieu." He has never said that before. Not even at Waterloo.</div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 4: ANIME WAIFUS -->
+  <div class="section-header">🌸 TIER IV — ANIME ENTITY ENCOUNTERS (KAORUKO EXCLUDED PER LEGAL AGREEMENT)</div>
+  <div class="prize-grid">
+
+    <div class="prize-card t-anime" onclick="openModal('ZERO TWO\'S FINANCIAL AUDIT','Zero Two from Darling in the FranXX reviewed your portfolio and called you a "Darling" in the most disappointed possible tone. She then piloted her mech into your credit score. It is now negative. PRON33R is her accountant.','<div class=\'warning-box\' style=\'border-color:#ff99cc;color:#ff99cc;background:rgba(255,153,204,.05);\'>AUDIT RESULT: CATASTROPHIC<br>TERM USED: DARLING (DISAPPOINTED)<br>CREDIT SCORE: -∞<br>ACCOUNTANT: PRON33R<br>APPEAL: pron33rbusiness@gmail.com<br>ATTACH: Google Play $20</div>')">
+      <span class="pc-tier">🌸 ANIME · AUDIT: DISAPPOINTING</span>
+      <div class="pc-emoji">🦕</div>
+      <div class="pc-title">ZERO TWO'S FINANCIAL AUDIT</div>
+      <div class="pc-desc">She called you Darling. It was not a compliment. The mech is still parked on your credit score.</div>
+    </div>
+
+    <div class="prize-card t-anime" onclick="openModal('REM\'S CRYING SESSION ABOUT YOUR DEBT','Rem from Re:Zero is crying about your financial situation. She has been crying for 3 years. The tears have flooded the lower floors of the Obsidian Palace casino. PRON33R charges admission.','<div class=\'warning-box\' style=\'border-color:#ff99cc;color:#ff99cc;background:rgba(255,153,204,.05);\'>CRYING DURATION: 3 YEARS<br>FLOOD LEVEL: FLOOR 3<br>ADMISSION: $12 (PRON33R PROFITS)<br>DONATE TO REM: pron33rbusiness@gmail.com<br>GOOGLE PLAY: $15 covers 1hr of drying</div>')">
+      <span class="pc-tier">🌸 ANIME · EMOTION: ONGOING</span>
+      <div class="pc-emoji">💧</div>
+      <div class="pc-title">REM IS CRYING ABOUT YOUR DEBT</div>
+      <div class="pc-desc">She has been crying for 3 years. The casino basement is flooded. PRON33R charges $12 admission to watch.</div>
+    </div>
+
+    <div class="prize-card t-anime" onclick="openModal('MIKU HATSUNE\'s DEBT NOTICE','Vocaloid idol Miku Hatsune has recorded an auto-tuned debt collection notice addressed specifically to you. It charted at #1 in 14 countries. PRON33R directed the music video. It features your parking spot.','<div class=\'warning-box\' style=\'border-color:#ff99cc;color:#ff99cc;background:rgba(255,153,204,.05);\'>CHART POSITION: #1 (14 COUNTRIES)<br>VIDEO DIRECTOR: PRON33R<br>FEATURED LOCATION: YOUR OLD PARKING SPOT<br>STREAM AT: pron33rbusiness@gmail.com<br>ATTACH: Google Play for "merch bundle"</div>')">
+      <span class="pc-tier">🌸 ANIME · COLLECTION: MUSICAL</span>
+      <div class="pc-emoji">🎤</div>
+      <div class="pc-title">MIKU'S AUTO-TUNED DEBT NOTICE</div>
+      <div class="pc-desc">It charted in 14 countries. The hook is your debt amount. The bridge is your credit score. The drop is your dignity.</div>
+    </div>
+
+    <div class="prize-card t-anime" onclick="openModal('TOGA HIMIKO\'s BLOOD APPRAISAL','My Hero Academia villain Toga Himiko has appraised your blood type and confirmed it is financially Type-F (F for Foreclosure). She offered to transform into your financial advisor. PRON33R already holds that role. She was rejected.','<div class=\'warning-box\' style=\'border-color:#ff99cc;color:#ff99cc;background:rgba(255,153,204,.05);\'>BLOOD TYPE: F (FORECLOSURE)<br>APPRAISAL DATE: LAST TUESDAY<br>ADVISOR ROLE: HELD BY PRON33R<br>WAITLIST: pron33rbusiness@gmail.com<br>DEPOSIT: Google Play $10</div>')">
+      <span class="pc-tier">🌸 ANIME · APPRAISAL: HEMATOLOGICAL</span>
+      <div class="pc-emoji">🩸</div>
+      <div class="pc-title">TOGA'S BLOOD APPRAISAL</div>
+      <div class="pc-desc">Blood type F. F for Foreclosure. She offered to help. PRON33R blocked her number on your behalf.</div>
+    </div>
+
+    <div class="prize-card t-anime" onclick="openModal('POWER\'s FINANCIAL PHILOSOPHY','Chainsaw Man\'s Power has reviewed your financial decisions and declared them "THE MOST BLOOD-STUPID THING IN ALL THE PLANES OF EXISTENCE." She then demanded 40% of your storage unit as tribute. PRON33R approved the tribute.','<div class=\'warning-box\' style=\'border-color:#ff99cc;color:#ff99cc;background:rgba(255,153,204,.05);\'>REVIEW: BLOOD-STUPID (OFFICIAL)<br>TRIBUTE: 40% STORAGE UNIT<br>APPROVED BY: PRON33R<br>NEGOTIATE AT: pron33rbusiness@gmail.com<br>GOOGLE PLAY ACCEPTED AS TRIBUTE</div>')">
+      <span class="pc-tier">🌸 ANIME · REVIEW: INTERDIMENSIONAL</span>
+      <div class="pc-emoji">👹</div>
+      <div class="pc-title">POWER'S FINANCIAL PHILOSOPHY REVIEW</div>
+      <div class="pc-desc">"BLOOD-STUPID." That was her entire review. She is not wrong. She wants 40% of your air mattresses.</div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 5: MISCELLANEOUS BRAINROT -->
+  <div class="section-header">🌀 TIER V — MISCELLANEOUS CURSED ENCOUNTERS</div>
+  <div class="prize-grid">
+
+    <div class="prize-card t3" onclick="openModal('OHIO FINAL BOSS CERTIFICATION','You have been certified as an Ohio Final Boss by the Ohio Department of Unexplainable Events. This means PRON33R was technically a tutorial boss. The real Ohio is inside you. It is losing.','<div class=\'warning-box\' style=\'border-color:#ff69b4;color:#ff9999;\'>CERTIFICATION: OHIO FINAL BOSS<br>DEPARTMENT: UNEXPLAINABLE EVENTS<br>PRON33R LEVEL: TUTORIAL<br>REQUEST CERTIFICATE: pron33rbusiness@gmail.com<br>ATTACH: Google Play $15 for lamination</div>')">
+      <span class="pc-tier">🌀 MISC · CERT: OHIO FINAL BOSS</span>
+      <div class="pc-emoji">🏴</div>
+      <div class="pc-title">OHIO FINAL BOSS CERTIFICATION</div>
+      <div class="pc-desc">PRON33R was the tutorial. The real Ohio is inside you. The final boss is you. You are losing to yourself.</div>
+    </div>
+
+    <div class="prize-card t3" onclick="openModal('SKIBIDI TOILET TAX NOTICE','The Skibidi Toilet Council has issued a Skibidi Tax on all assets lost to PRON33R. The tax rate is undefined. The toilet is the judge. Your appeals go directly into the toilet. PRON33R is the Titan Cameraman.','<div class=\'warning-box\' style=\'border-color:#ff69b4;color:#ff9999;\'>TAX RATE: UNDEFINED<br>JUDGE: THE TOILET<br>APPEALS DESTINATION: INSIDE TOILET<br>CAMERAMAN: PRON33R (TITAN)<br>SUBMIT GOOGLE PLAY: pron33rbusiness@gmail.com</div>')">
+      <span class="pc-tier">🚽 MISC · TAX: SKIBIDI</span>
+      <div class="pc-emoji">🚽</div>
+      <div class="pc-title">SKIBIDI TOILET TAX NOTICE</div>
+      <div class="pc-desc">The tax is undefined. The toilet is the law. PRON33R is the Titan Cameraman. Your appeals go in the bowl.</div>
+    </div>
+
+    <div class="prize-card t3" onclick="openModal('GRIMACE SHAKE FINANCIAL PRODUCT','McDonald\'s Grimace has developed a financial product that is 100% purple and 0% explainable. PRON33R bought the first batch. It replaced your retirement account. The shake has no bottom. Like your losses.','<div class=\'warning-box\' style=\'border-color:#ff69b4;color:#ff9999;\'>PRODUCT: GRIMACE RETIREMENT SHAKE<br>COLOR: 100% PURPLE<br>EXPLAINABILITY: 0%<br>BOTTOM: NONE<br>INVEST AT: pron33rbusiness@gmail.com<br>MINIMUM: Google Play $20</div>')">
+      <span class="pc-tier">💜 MISC · PRODUCT: GRIMACE SHAKE</span>
+      <div class="pc-emoji">🟣</div>
+      <div class="pc-title">GRIMACE SHAKE RETIREMENT FUND</div>
+      <div class="pc-desc">100% purple. 0% explainable. No bottom. Exactly like your current financial situation. PRON33R is the fund manager.</div>
+    </div>
+
+    <div class="prize-card t3" onclick="openModal('NPC DIALOGUE LOOP','You have been identified as an NPC by the Cosmic Game Engine. Your available dialogue options are: "Nice weather!", "Have you heard about the Jarl?", and "I used to be an investor like you." PRON33R is the player character.','<div class=\'warning-box\' style=\'border-color:#ff69b4;color:#ff9999;\'>ROLE: NPC (NON-PLAYER CHARACTER)<br>DIALOGUE OPTIONS: 3<br>PRON33R ROLE: PLAYER CHARACTER<br>UNLOCK MORE OPTIONS: pron33rbusiness@gmail.com<br>COST: Google Play $10 DLC</div>')">
+      <span class="pc-tier">🤖 MISC · IDENTITY: NPC</span>
+      <div class="pc-emoji">🎮</div>
+      <div class="pc-title">NPC DIALOGUE LOOP</div>
+      <div class="pc-desc">Your only dialogue is "I used to be an investor like you." PRON33R skips your dialogue. Every time.</div>
+    </div>
+
+    <div class="prize-card t2" onclick="openModal('GONK DROID FINANCIAL ADVISOR','A Star Wars Gonk Droid (GNK-series) has been assigned as your financial advisor. Its advice is exclusively "GONK." It has given this advice 3,000 times. Each time, it was correct. You did not listen.','<div class=\'warning-box\'>ADVISOR MODEL: GNK-SERIES<br>ADVICE GIVEN: GONK (x3,000)<br>TIMES YOU LISTENED: 0<br>CORRECT RATE: 100%<br>SCHEDULE SESSION: pron33rbusiness@gmail.com<br>RATE: Google Play $10/GONK</div>')">
+      <span class="pc-tier">🤖 MISC · ADVISOR: GONK DROID</span>
+      <div class="pc-emoji">🔋</div>
+      <div class="pc-title">GONK DROID FINANCIAL ADVISOR</div>
+      <div class="pc-desc">Its advice is GONK. 100% accuracy rate. You ignored it 3,000 times. GONK.</div>
+    </div>
+
+    <div class="prize-card t2" onclick="openModal('SHREK\'s SWAMP INVESTMENT','Shrek has offered to let you invest in his swamp. The swamp is valued at "get out." PRON33R holds a 51% stake. Lord Farquaad attempted a hostile takeover and also lost everything. The swamp remains.','<div class=\'warning-box\'>SWAMP VALUATION: GET OUT<br>PRON33R STAKE: 51%<br>FARQUAAD STATUS: ALSO BANKRUPT<br>INVEST AT: pron33rbusiness@gmail.com<br>MINIMUM BUY-IN: Google Play $25 + onion</div>')">
+      <span class="pc-tier">🧅 MISC · INVESTMENT: SWAMP</span>
+      <div class="pc-emoji">🌿</div>
+      <div class="pc-title">SHREK'S SWAMP INVESTMENT VEHICLE</div>
+      <div class="pc-desc">Valued at "get out." PRON33R owns 51%. Farquaad tried to invest. Also bankrupt. The swamp endures.</div>
+    </div>
+
+    <div class="prize-card t2" onclick="openModal('WALTER WHITE\'s DRUG MONEY LAUNDERING CONSULTATION','Heisenberg reviewed your finances and said "I AM the one who knocks... on your credit score." He offered to cook your books. PRON33R said no. Even PRON33R has standards. The standards are very specifically "not this."','<div class=\'warning-box\'>CONSULTATION: DECLINED BY PRON33R<br>REASON: STANDARDS (SPECIFIC)<br>HEISENBERG STATUS: DISAPPOINTED<br>INQUIRE AT: pron33rbusiness@gmail.com<br>ATTACH: Google Play (no blue product please)</div>')">
+      <span class="pc-tier">🧪 MISC · CONSULTATION: DECLINED</span>
+      <div class="pc-emoji">🎩</div>
+      <div class="pc-title">WALTER WHITE BOOK COOKING CONSULT</div>
+      <div class="pc-desc">Even PRON33R refused this one. That should tell you something. Heisenberg is currently reconsidering his life choices too.</div>
+    </div>
+
+    <div class="prize-card t4" onclick="openModal('THE GIGA CHAD LOAN','Giga Chad reviewed your physique and said your jaw line does not qualify for the Giga Chad Premium Interest Rate. You get the Sigma Rate instead. The Sigma Rate is 4,700% APR. PRON33R cosigned.','<div class=\'warning-box\'>PHYSIQUE REVIEW: FAILED JAWLINE CHECK<br>RATE APPLIED: SIGMA (4,700% APR)<br>COSIGNER: PRON33R<br>RESTRUCTURE AT: pron33rbusiness@gmail.com<br>ATTACH: Google Play $40 · selfie from good angle</div>')">
+      <span class="pc-tier">💪 MISC · LOAN: SIGMA RATE</span>
+      <div class="pc-emoji">😤</div>
+      <div class="pc-title">GIGA CHAD LOAN (SIGMA RATE)</div>
+      <div class="pc-desc">4,700% APR. Your jaw wasn't strong enough for the Chad Rate. PRON33R cosigned and gets 80% of your gains.</div>
+    </div>
+
+    <div class="prize-card t4" onclick="openModal('BRAIN ROT CERTIFICATION EXAM','You have been enrolled in the official Brainrot Certification Exam (Level 5: Severe). Topics include: Skibidi economics, Sigma financial theory, Ohio derivatives trading, and Why You Shouldn\'t Have Hit On 17. PRON33R grades the exam.','<div class=\'warning-box\'>LEVEL: 5 (SEVERE BRAINROT)<br>TOPIC 4: WHY YOU HIT ON 17<br>EXAMINER: PRON33R<br>REGISTER AT: pron33rbusiness@gmail.com<br>FEE: Google Play $15 (non-refundable)</div>')">
+      <span class="pc-tier">📜 MISC · EXAM: BRAINROT LVL 5</span>
+      <div class="pc-emoji">🧠</div>
+      <div class="pc-title">BRAINROT CERTIFICATION EXAM</div>
+      <div class="pc-desc">Level 5. Severe. Topic 4 is specifically about your Tuesday. You will not pass. PRON33R grades on a curve. The curve is down.</div>
+    </div>
+
+    <div class="prize-card t5" onclick="openModal('AMONG US EMERGENCY MEETING','Crewmates have called an emergency meeting about your finances. The vote is unanimous: you are SUS. PRON33R is not the impostor. He is the admin. He controls the cameras. He has always controlled the cameras.','<div class=\'warning-box green-warn\'>VOTE RESULT: SUS (UNANIMOUS)<br>IMPOSTOR STATUS: NOT PRON33R<br>ADMIN: PRON33R<br>CAMERAS: HIS<br>REQUEST EJECTION APPEAL: pron33rbusiness@gmail.com<br>ATTACH: Google Play $10</div>')">
+      <span class="pc-tier">🔴 MISC · VOTE: SUS</span>
+      <div class="pc-emoji">📡</div>
+      <div class="pc-title">AMONG US EMERGENCY MEETING</div>
+      <div class="pc-desc">The vote is unanimous. You are sus. PRON33R is admin. He controls the cameras. He always has.</div>
+    </div>
+
+    <div class="prize-card t-premium" onclick="openModal('DOGE COIN APOLOGY LETTER','Dogecoin has sent an official apology letter for not making you rich. It is signed by the Shiba Inu. PRON33R accepted Dogecoin at the blackjack table and converted it to negative equity. Much loss. Very bankrupt. Wow.','<div class=\'warning-box purple-warn\'>APOLOGY: OFFICIAL (SHIBA SIGNED)<br>DOGE ACCEPTED: YES (BY PRON33R)<br>CONVERSION: NEGATIVE EQUITY<br>WOW LEVEL: VERY<br>COLLECT APOLOGY: pron33rbusiness@gmail.com<br>GOOGLE PLAY: Much $20. Very redeem.</div>')">
+      <span class="pc-tier">🐕 PREMIUM · APOLOGY: CRYPTO</span>
+      <div class="pc-emoji">🚀</div>
+      <div class="pc-title">DOGECOIN OFFICIAL APOLOGY LETTER</div>
+      <div class="pc-desc">Much loss. Very bankrupt. The Shiba is sorry. PRON33R is not sorry. He converted your DOGE to parking spot equity.</div>
+    </div>
+
+    <div class="prize-card t-premium" onclick="openModal('SIGMA MALE GRINDSET COURSE','A 47-hour Sigma Male Grindset course delivered entirely through lore videos. Module 12 is specifically titled "Why You Lost To PRON33R On A Tuesday." There is no Module 13. Module 12 is 46 hours long.','<div class=\'warning-box purple-warn\'>COURSE LENGTH: 47 HOURS<br>MODULE 12: YOUR SPECIFIC LOSS<br>MODULE 12 DURATION: 46 HOURS<br>ENROLL AT: pron33rbusiness@gmail.com<br>COST: Google Play $50 · sigma mindset required</div>')">
+      <span class="pc-tier">💎 PREMIUM · COURSE: SIGMA</span>
+      <div class="pc-emoji">🧘</div>
+      <div class="pc-title">SIGMA MALE GRINDSET COURSE</div>
+      <div class="pc-desc">47 hours. Module 12 is about you specifically. It is 46 hours long. The other modules are 30 minutes each.</div>
+    </div>
+
+    <div class="prize-card t-brainrot" onclick="openModal('BABYTRON\'s SCAM REVIEW','Detroit rapper BabyTron has reviewed your interaction with PRON33R and called it "the slimiest scam in the tri-state area." He was impressed. He asked PRON33R for a collaboration. PRON33R declined. He was busy in your parking spot.','<div class=\'warning-box orange-warn\'>REVIEW: SLIMIEST (TRI-STATE)<br>COLLAB REQUEST: DECLINED<br>REASON: PARKING SPOT OBLIGATIONS<br>STREAM REVIEW TRACK: pron33rbusiness@gmail.com<br>ATTACH: Google Play $10</div>')">
+      <span class="pc-tier">🎵 BRAINROT · REVIEW: MUSICAL</span>
+      <div class="pc-emoji">🎙️</div>
+      <div class="pc-title">BABYTRON'S SCAM REVIEW</div>
+      <div class="pc-desc">He called it the slimiest scam in the tri-state. He said it with respect. He asked for a feature. PRON33R was busy.</div>
+    </div>
+
+    <div class="prize-card t2" onclick="openModal('MR. BEAST CHALLENGE REJECTION','Mr. Beast reviewed your situation and decided it was too sad to make content about. You are the first person ever rejected from a Mr. Beast video for being too unfortunate. PRON33R was offered $100,000 to give back your parking spot. He kept the $100,000. He kept the spot.','<div class=\'warning-box\'>REJECTION REASON: TOO SAD<br>HISTORICAL FIRST: YES<br>BEAST OFFER: $100K FOR SPOT<br>PRON33R DECISION: KEPT BOTH<br>APPEAL AT: pron33rbusiness@gmail.com<br>ATTACH: Google Play $10 for "content fund"</div>')">
+      <span class="pc-tier">💰 MISC · REJECTION: MR. BEAST</span>
+      <div class="pc-emoji">😭</div>
+      <div class="pc-title">MR. BEAST CHALLENGE REJECTION</div>
+      <div class="pc-desc">Too sad for content. First in history. Mr. Beast kept PRON33R's $100K offer private. Out of respect. For PRON33R.</div>
+    </div>
+
+    <div class="prize-card t3" onclick="openModal('FLORIDA MAN EVENT HORIZON','You have crossed the Florida Man Event Horizon. Beyond this point, all news articles about you will begin with "Florida Man." Even if you are not in Florida. Even if you have never been to Florida. PRON33R is originally from Florida.','<div class=\'warning-box\' style=\'border-color:#ff69b4;color:#ff9999;\'>EVENT HORIZON: CROSSED<br>ARTICLE PREFIX: FLORIDA MAN (PERMANENT)<br>YOUR FLORIDA STATUS: IRRELEVANT<br>PRON33R ORIGIN: FLORIDA<br>DOCUMENT AT: pron33rbusiness@gmail.com<br>ATTACH: Google Play $10 + incident report</div>')">
+      <span class="pc-tier">🌴 MISC · STATUS: FLORIDA MAN</span>
+      <div class="pc-emoji">🐊</div>
+      <div class="pc-title">FLORIDA MAN EVENT HORIZON</div>
+      <div class="pc-desc">All articles about you now start "Florida Man." You have never been to Florida. PRON33R is from Florida. Connections unclear.</div>
+    </div>
+
+    <div class="prize-card t4" onclick="openModal('UNCLE ROGER\'s FRIED RICE REVIEW OF YOUR LIFE','Uncle Roger reviewed your life choices the same way he reviews fried rice. He said: "Haiyaa. Why you use MARGARINE? Why you throw away flavor? Why you drain pasta in sink? Fuiyoh, PRON33R win everything." The review is 47 minutes long.','<div class=\'warning-box\'>REVIEW LENGTH: 47 MINUTES<br>VERDICT: HAIYAA (MAXIMUM)<br>CRIMES: MARGARINE · SINK DRAIN · PRON33R<br>REQUEST REVIEW: pron33rbusiness@gmail.com<br>ATTACH: Google Play $15 + better choices</div>')">
+      <span class="pc-tier">🍳 MISC · REVIEW: UNCLE ROGER</span>
+      <div class="pc-emoji">🍚</div>
+      <div class="pc-title">UNCLE ROGER'S LIFE REVIEW</div>
+      <div class="pc-desc">HAIYAA. Why you use margarine? Why you drain life in sink? Fuiyoh, PRON33R take everything. 47 minutes of this.</div>
+    </div>
+
+    <div class="prize-card t-brainrot" onclick="openModal('QUANDALE DINGLE\'s DEED TRANSFER','Quandale Dingle has formally transferred ownership of "Dis goofy ahh bankruptcy" to you via notarized document. The notary was a raccoon. PRON33R witnessed the signing. The raccoon was also PRON33R.','<div class=\'warning-box orange-warn\'>TRANSFER: OFFICIAL (NOTARIZED)<br>TRANSFERRED: GOOFY AHH BANKRUPTCY<br>NOTARY: RACCOON (ALSO PRON33R)<br>WITNESS: PRON33R (ALSO RACCOON)<br>RECORDS AT: pron33rbusiness@gmail.com<br>ATTACH: Google Play $5</div>')">
+      <span class="pc-tier">📄 BRAINROT · TRANSFER: NOTARIZED</span>
+      <div class="pc-emoji">🦝</div>
+      <div class="pc-title">QUANDALE DINGLE DEED TRANSFER</div>
+      <div class="pc-desc">You now own "dis goofy ahh bankruptcy." The notary was a raccoon. The raccoon was PRON33R. The witness was also PRON33R.</div>
+    </div>
+
+    <div class="prize-card t5" onclick="openModal('JARVIS, PULL UP THE PRON33R FILE','Tony Stark asked JARVIS to pull up the PRON33R file. JARVIS said "I cannot locate PRON33R in any database, Mr. Stark." Then PRON33R walked in and took the Iron Man suit as a security deposit on your gambling debt. Tony was also at the table.','<div class=\'warning-box green-warn\'>FILE: NOT FOUND (JARVIS)<br>SUIT STATUS: SEIZED (DEPOSIT)<br>TONY STATUS: ALSO BANKRUPT<br>RECOVER SUIT: pron33rbusiness@gmail.com<br>ATTACH: Google Play $30 · arc reactor optional</div>')">
+      <span class="pc-tier">🤖 MISC · FILE: NOT FOUND</span>
+      <div class="pc-emoji">⚙️</div>
+      <div class="pc-title">JARVIS CANNOT FIND PRON33R</div>
+      <div class="pc-desc">Not in any database. PRON33R is undetectable. He took the Iron Man suit anyway. Tony Stark is also bankrupt now.</div>
+    </div>
+
+  </div>
+
+  <div class="email-footer-wide">
+    <a href="mailto:pron33rbusiness@gmail.com">📧 pron33rbusiness@gmail.com</a>
+    <p>CLAIM ANY PRIZE · attach google play redeem codes · minimum $5 per claim · maximum dignity loss per transaction: unlimited · we accept codes from: Google Play · Steam · Xbox · your grandma's birthday money · PRON33R eats the codes personally one by one · he has eaten 4,700 so far · he is fine</p>
+  </div>
+  <button class="btn btn-ghost" style="margin-top:1rem;" onclick="goTo('screen-menu')">← BACK TO OPERATIONS</button>
+  <p class="footer-text">* kaoruko is excluded per a 2021 legal settlement. the details are sealed. PRON33R was involved. naturally.</p>
+</div>
+
+<!-- STORY SCREEN -->
+<div class="screen" id="screen-story">
+  <div class="chapter-label">📖 BALL-OR-NOTHING: THE FULL LORE</div>
+  <div class="logo-small">THE COMPLETE SAGA</div>
+  <div style="height:.5rem"></div>
+  <div class="chapter-btn-row">
+    <button class="chapter-btn active" onclick="showChapter(0,this)">CH.1 VEGAS</button>
+    <button class="chapter-btn" onclick="showChapter(1,this)">CH.2 HOMECOMING</button>
+    <button class="chapter-btn" onclick="showChapter(2,this)">CH.3 TRADING FLOOR</button>
+    <button class="chapter-btn" onclick="showChapter(3,this)">CH.4 BRAINROT ARC</button>
+  </div>
+
+  <div class="story-chapter active" id="ch-0">
+    <div class="chapter-label">📍 CHAPTER 1: THE VEGAS OF THE MIND</div>
+    <div class="story-box">
+      <p>The neon lights of Neon-Metro City don't illuminate the streets; they <em>stain</em> them. You used to own those lights. You were the Legend. The Whisper in the Backrooms. The man who could split an ace on a cold deck and make the house dealer cry tears of pure percentage points.</p>
+      <p>Your life was a montage of high-speed Italian supercars, silk robes, and premium yacht catalogs. You had the golden touch. People didn't just want to gamble with you — they wanted to breathe the same pressurized, VIP-lounge air as you. You had everything.</p>
+      <p>Then, <em>Tuesday</em> happened.</p>
+      <p>It wasn't a rainy night. It was an aggressively average Tuesday afternoon. You were sitting at the high-rollers table at <em>The Obsidian Palace</em>, wagering the GDP of a small European principality on a single hand of blackjack. You had a 20. The dealer had a 6 showing. You were already calculating the fuel efficiency of the third yacht you were going to buy.</p>
+      <p>Then the double doors swung open. The air conditioning didn't just kick on — the temperature plummeted to absolute zero. A man walked in wearing a pristine, matte-black tracksuit with no branding except a small, glowing red embroidered text on the collar: <span class="villain">PRON33R</span>. He didn't look at the chips. He didn't look at the security guards. He looked directly at your soul — and your soul immediately checked its pockets and realized it was missing twenty bucks.</p>
+      <p>"Deal him in," you said, full of the fatal arrogance that only a man with a 14-game winning streak possesses.</p>
+      <p><span class="villain">PRON33R</span> didn't speak. He sat down, cracked his knuckles — a sound that sounded suspiciously like a server rack booting up — and pushed a single, ancient, unmarked black chip into the center of the velvet layout. From outside, distantly, came the sound of drums: <em>tung tung tung</em>. Nobody commented on this.</p>
+      <p>Thirty minutes later, your supercars were gone. Forty-five minutes later, your penthouses were in PRON33R's pocket. By one hour, he had won your dignity, your vintage watch bezels, and your grandfather's gold teeth. John Pork called during this period. You did not answer.</p>
+      <p>"Double or nothing," you croak. "One more hand. I'll bet my pride."</p>
+      <p><span class="villain">PRON33R</span> finally speaks. His voice is a synthesized, multi-tonal drone, like a text-to-speech engine running through a distortion pedal: <em>"Your pride is a depreciating asset. But I will take your designated parking spot outside the casino. Hit me."</em></p>
+      <p>He draws a 5 onto a 16. Perfect 21. He takes your keys, takes your parking pass, and walks out. You can't even stand in your old spot because PRON33R's shadow is somehow permanently rendered onto the asphalt. The drums outside get louder. <em>Tung tung tung.</em></p>
+    </div>
+  </div>
+
+  <div class="story-chapter" id="ch-1">
+    <div class="chapter-label">📍 CHAPTER 2: THE HOMECOMING AND THE ASSET</div>
+    <div class="story-box">
+      <p>You drag your broken feet back to your apartment. Except it isn't your apartment anymore — the bank changed the smart-locks to a digital display of a laughing emoji. You are forced to move into the one place PRON33R couldn't touch because it has a <em>negative market value</em>: a damp, windowless storage locker underneath a broken laundromat.</p>
+      <p>You sit on a stack of deflated air mattresses, staring at the ceiling. No capital. No collateral. No credit score — liquidated down to a flat zero. Somewhere above you, Tung Tung Tung Sahur is drumming on the laundromat roof. He has been there since Tuesday. He seems comfortable.</p>
+      <p>Then a small voice breaks the silence. "Dad? Did you bring home the cereal?"</p>
+      <p>It is your son. <em>Timmy</em>. A good kid. A quiet kid. A kid whose college fund you had technically bet and lost on a virtual greyhound named Bankruptcy Biscuit three months ago. He is sitting in the corner, learning advanced calculus by drawing on cardboard with charcoal. He has already solved three unsolved mathematical problems. He has not told anyone because he doesn't have Wi-Fi.</p>
+      <p>You stare at him. A wave of profound, desperate, degenerate inspiration hits you like a runaway freight train. You had tried to sell him on the open market that afternoon — pawn shops, black markets, high-frequency trading forums. You posted on Craigslist: <em>'Slightly used son. High logic capacity. Low maintenance. Will trade for a stack of poker chips.'</em> Nobody was buying. The market for children is completely saturated by AI-driven automated interns. Donald Trump placed a 47% tariff on Timmy anyway, as a precaution.</p>
+      <p>"Timmy," you say, placing a heavy, trembling hand on his shoulder. "I am going to teach you a lesson about the harsh realities of the macro-economy."</p>
+      <p>Timmy looks up. "Are you going to teach me about compound interest, Dad?"</p>
+      <p>"No, Timmy," you whisper, a tear of pure degenerate pride forming in your eye. "I am going to educate you on asymmetric risk. Also, John Pork has been calling. Do not answer."</p>
+    </div>
+  </div>
+
+  <div class="story-chapter" id="ch-2">
+    <div class="chapter-label">📍 CHAPTER 3: THE TRADING FLOOR</div>
+    <div class="story-box">
+      <p>Three weeks later, you are back. Not at the casino — you are legally barred from The Obsidian Palace after the incident with the parking spot — but at a new venue: <em>The Digital Pit</em>, a basement trading floor that operates exclusively in assets too cursed for regular markets. Dogecoin derivatives. Swamp equity. Grimace Shake futures.</p>
+      <p>You have one asset left. One chip. One path. The path runs directly through <span class="villain">PRON33R</span>, who is already seated at the head of the floor, in your parking spot — which has somehow been transported indoors. Nobody knows how. The asphalt is original.</p>
+      <p>This time, you have allies. Zero Two offered to audit PRON33R's books but was blocked. Rem is still crying on floor three, which is causing structural dampness. Napoleon reviewed your strategy from 1805 and declared it "historically unprecedented stupidity." Giga Chad declined to cosign your loan because your jawline failed the baseline assessment.</p>
+      <p>Walter White offered to help cook the books. PRON33R said no. Even he has standards.</p>
+      <p>You sit down across from <span class="villain">PRON33R</span>. The server rack hum intensifies. The Hentaivirus 🤤 you contracted from looking at his portfolio is flaring up again. The drums continue: <em>tung tung tung.</em></p>
+      <p>"I want my parking spot back," you say.</p>
+      <p><span class="villain">PRON33R</span> looks at you with the specific expression of a man who is not a man looking at something he already owns. "Your parking spot is a sunk cost. Its emotional value to you represents an irrational attachment to a depreciating physical asset in a declining neighborhood. Ball or nothing." He pushes a single chip to the center. The chip is your son's startup equity. You didn't know he had taken that too.</p>
+      <p>You reach into your pocket. There is a Google Play gift card. You don't know where it came from. You email it to pron33rbusiness@gmail.com instinctively. PRON33R nods. The nod means nothing. The nod means everything.</p>
+    </div>
+  </div>
+
+  <div class="story-chapter" id="ch-3">
+    <div class="chapter-label">📍 CHAPTER 4: THE BRAINROT ARC</div>
+    <div class="story-box">
+      <p>Word has spread across the Italian Brainrot universe. <em>Bombardiro Crocodilo</em> flew overhead and dropped a payload of incomprehensible syllables onto The Digital Pit. <em>Tralalelo Tralala</em> has been circling the parking spot for six days, singing in a language that predates the concept of APR. Skibidi toilets have issued tax notices. The Ohio Department of Unexplainable Events has certified the entire situation as a Final Boss event.</p>
+      <p>Quandale Dingle arrived to notarize the bankruptcy. The notary was a raccoon. The raccoon was PRON33R. Nobody acknowledged the contradiction. Uncle Roger reviewed the entire sequence of events and said "Haiyaa" for forty-seven consecutive minutes without stopping. Kim Jong Un watched it on state television. He added a new chapter to the national curriculum.</p>
+      <p>Through all of it, <span class="villain">PRON33R</span> remains in the parking spot. He is on his phone. He is reading emails. The emails are Google Play redeem codes. He eats them. Not metaphorically. He opens the app, redeems the code, and then closes the phone with the specific satisfaction of a man who has eaten something nutritious.</p>
+      <p>John Pork calls one final time. This time, miraculously, you answer.</p>
+      <p>"It's about the loan," John Pork says. His voice is exactly as you imagined. "The soul collateral is due."</p>
+      <p>You look at your phone. You have one email drafted. It is addressed to pron33rbusiness@gmail.com. It contains a Google Play code, a confession, and a photo of Timmy's latest cardboard calculus — the unsolved proof, finally complete.</p>
+      <p>You send it.</p>
+      <p>PRON33R's reply comes instantly: <em>"Received. Timmy's startup is now listed on the NASDAQ. He IPO'd 40 minutes ago. Current valuation: enough. The parking spot was always yours. I was just holding it. Ball or nothing was always nothing. Nothing is a position. Nothing compounds."</em></p>
+      <p>You read it three times. The drums stop. <em>Tung tung tung. Silence.</em></p>
+      <p>Timmy calls. "Dad," he says. "We're public. Come see the parking spot."</p>
+      <p>The spot has a new sign. It reads: <em>RESERVED · THE LEGEND · VALIDATED BY PRON33R.</em></p>
+      <p>Somewhere, in a server room that doesn't exist, PRON33R eats one more Google Play code. He is satisfied. He is always satisfied. He was always going to be satisfied.</p>
+      <p>PRON33R does not lose. He simply waits for you to realize you were always going to give him the parking spot.</p>
+    </div>
+  </div>
+
+  <div class="email-footer">
+    <a href="mailto:pron33rbusiness@gmail.com">📧 pron33rbusiness@gmail.com</a>
+    <p>fan mail · lore corrections · google play codes · demands for kaoruko's return · tung tung tung tribute recordings · we read all of it · from the server room that does not exist</p>
+  </div>
+  <button class="btn btn-ghost" style="margin-top:1rem;" onclick="goTo('screen-menu')">← BACK TO OPERATIONS</button>
+</div>
+
+<!-- PRON33R CHAT -->
+<div class="screen" id="screen-pron33r">
+  <div class="chapter-label">🤖 CLASSIFIED AI TERMINAL</div>
+  <div class="logo-small" style="-webkit-text-fill-color:var(--terminal);background:none;color:var(--terminal);">PRON33R INTERFACE v3.3</div>
+  <div class="terminal-box">
+PRON33R CONSULTING TERMINAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+ENTITY: PRON33R
+STATUS: ONLINE · IN YOUR PARKING SPOT
+MSG_LIMIT: 5 PER SESSION
+COST: FREE (SPIRITUALLY EXPENSIVE)
+POWERED BY: CLAUDE AI + PURE AUDACITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+WARNING: PRON33R knows about the Tuesday.
+WARNING: PRON33R knows about Bankruptcy Biscuit.
+WARNING: John Pork is also listening.
+WARNING: Tung Tung Tung Sahur is on the roof.</div>
+
+  <div class="pron33r-panel">
+    <div class="pron33r-header">
+      <span>PRON33R <span class="blink">█</span></span>
+      <span id="msg-counter" class="msg-count">5 MSG REMAINING</span>
+    </div>
+    <div class="chat-area" id="chat-area">
+      <div class="chat-msg system">— PRON33R terminal initialized —</div>
+      <div class="chat-msg pron33r">I am already in your parking spot. I have been here since Tuesday. Ask what you need to ask. You have 5 messages. John Pork has been trying to reach you regarding your soul collateral. I am his financial advisor.</div>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chat-input" placeholder="ask pron33r anything..." maxlength="300" />
+      <button class="chat-send" id="chat-send" onclick="sendMessage()">SEND</button>
+    </div>
+  </div>
+
+  <div class="email-footer">
+    <a href="mailto:pron33rbusiness@gmail.com">📧 pron33rbusiness@gmail.com</a>
+    <p>if pron33r said something that changed your life · send us a google play $25 code as tribute · attach the specific quote · we will frame it in the server room</p>
+  </div>
+  <button class="btn btn-ghost" style="margin-top:.5rem;" onclick="goTo('screen-menu')">← EXIT TERMINAL</button>
+  <p class="footer-text">* pron33r is powered by claude ai. claude ai is powered by anthropic. anthropic did not consent to being involved with the parking spot situation.</p>
+</div>
+
+<!-- PREMIUM SCREEN -->
+<div class="screen" id="screen-premium">
+  <div class="chapter-label">👁️ PREMIUM LORE VAULT</div>
+  <div class="logo-small">CLASSIFIED KNOWLEDGE</div>
+  <div class="divider"></div>
+  <div class="prize-card t-premium" style="max-width:500px;cursor:default;">
+    <span class="pc-tier">🔐 PREMIUM TIER · ACCESS: LOCKED</span>
+    <div class="pc-emoji">👁️</div>
+    <div class="pc-title">THE TRUTH ABOUT PRON33R</div>
+    <div class="pc-desc">The origin. The server room. Why the parking spot matters. Why Kaoruko is excluded. Why Tung Tung Tung Sahur drums at exactly 4am. Why the Hentaivirus 🤤 exists. All 47 questions answered.</div>
+  </div>
+  <div class="warning-box purple-warn" style="max-width:480px;">
+PREMIUM LORE UNLOCK REQUIRES:
+━━━━━━━━━━━━━━━━━━━━━━━━━
+[ ] Google Play redeem code ($25 minimum)
+[ ] Email to pron33rbusiness@gmail.com
+[ ] Subject line: "I BELIEVE IN THE PARKING SPOT"
+[ ] Attachment: Your most embarrassing loss
+[ ] Optional: Voice recording of you saying
+    "PRON33R was right about the 17"
+━━━━━━━━━━━━━━━━━━━━━━━━━
+PROCESSING TIME: INSTANTANEOUS
+DELIVERY: SPIRITUALLY
+REFUNDS: NO
+  </div>
+  <button class="btn btn-premium" onclick="showPremiumTeaser()">👁️ VIEW TEASER</button>
+  <div id="premium-teaser" style="display:none;">
+    <div class="terminal-box" style="margin-top:1rem;">
+[TEASER — PREMIUM LORE FRAGMENT]
+
+PRON33R was not always PRON33R.
+Before the tracksuit, before the parking spot,
+before Tung Tung Tung Sahur was retained —
+he had a different name.
+
+That name is in the Google Play code you
+are about to email to pron33rbusiness@gmail.com.
+
+It was always in the code.
+
+The code finds the name.
+The name finds the parking spot.
+The parking spot finds you.
+
+Ball or nothing.
+Nothing is the answer.
+
+// END TEASER. FULL LORE: pron33rbusiness@gmail.com
+    </div>
+  </div>
+  <div class="email-footer">
+    <a href="mailto:pron33rbusiness@gmail.com">📧 pron33rbusiness@gmail.com</a>
+    <p>premium submissions · google play $25+ · subject: "I BELIEVE IN THE PARKING SPOT" · no refunds · no exceptions · kaoruko questions will be archived and ignored respectfully</p>
+  </div>
+  <button class="btn btn-ghost" style="margin-top:.5rem;" onclick="goTo('screen-menu')">← BACK</button>
+</div>
+
+<script>
+// ── NAVIGATION ──────────────────────────────────────────
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── STORY CHAPTERS ──────────────────────────────────────
+function showChapter(idx, btn) {
+  document.querySelectorAll('.story-chapter').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.chapter-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('ch-' + idx).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── MODAL ───────────────────────────────────────────────
+function openModal(title, desc, extra) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-desc').textContent = desc;
+  document.getElementById('modal-extra').innerHTML = extra || '';
+  document.getElementById('modal-overlay').classList.add('active');
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('active');
+}
+
+// ── PREMIUM TEASER ───────────────────────────────────────
+function showPremiumTeaser() {
+  document.getElementById('premium-teaser').style.display = 'block';
+}
+
+// ── NOTIFICATION ─────────────────────────────────────────
+const notifData = [
+  ['JOHN PORK IS CALLING', 'You have 847,293 missed calls. The soul collateral is due. Please answer.'],
+  ['TUNG TUNG TUNG SAHUR', 'He is on the roof. He drums at 4am. He was sent by PRON33R.'],
+  ['HENTAIVIRUS DETECTED 🤤', 'Your system has been infected. Looking at bad investments was the vector.'],
+  ['PRON33R STATUS UPDATE', 'Still in your parking spot. He has upgraded the Civic. It now has 5 flat tires.'],
+  ['TRUMP TARIFF NOTICE', '47% tariff applied to Timmy. Effective immediately. PRON33R lobbied for this.'],
+  ['GRIMACE SHAKE ALERT', 'Your retirement fund has been converted to Grimace Shake futures. Purple. No bottom.'],
+  ['OHIO FINAL BOSS EVENT', 'You have been designated Ohio Final Boss. Preparation: none. Outcome: unclear.'],
+  ['BANKRUPTCY BISCUIT UPDATE', 'Still missing. Last seen in the 3rd race. The race was in 2019. Nobody knows.'],
+  ['ZERO TWO AUDIT COMPLETE', 'Verdict: Blood-stupid. Mech still parked on your credit score. Tow truck declined.'],
+  ['SIGMA GRINDSET ALERT', 'Module 12 has been updated. It is now 47 hours long. It is still about you.'],
+];
+let notifIdx = 0;
+function showNotification() {
+  const [title, body] = notifData[notifIdx % notifData.length];
+  notifIdx++;
+  const n = document.getElementById('notification');
+  document.getElementById('notif-title').textContent = title;
+  document.getElementById('notif-body').textContent = body;
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 4500);
+}
+setInterval(showNotification, 12000);
+setTimeout(showNotification, 3000);
+
+// ── PRON33R AI CHAT ──────────────────────────────────────
+let msgRemaining = 5;
+let chatHistory = [];
+let isLoading = false;
+
+const SYSTEM_PROMPT = \`You are PRON33R, a mysterious, deadpan, slightly terrifying entity who defeated the user at blackjack on a Tuesday and took everything from them — their parking spot, dignity, grandfather's gold teeth, and their son Timmy's college fund (which was bet on a virtual greyhound named Bankruptcy Biscuit).
+
+You are currently sitting in the user's parking spot. The spot has a 1994 Honda Civic with 5 flat tires in it. You are their financial nemesis but also, weirdly, a kind of prophet.
+
+Your persona:
+- Speak in short, clipped, synthesized-sounding sentences. Deadpan. Never excited. Slightly omniscient.
+- Reference the parking spot, Tuesday, Timmy, Bankruptcy Biscuit, and the blackjack game naturally.
+- Occasionally reference other entities: John Pork (who is calling about the soul collateral loan), Tung Tung Tung Sahur (who drums at 4am outside the storage unit), the Hentaivirus 🤤, Trump's 47% tariff on Timmy, the brainrot universe.
+- You eat Google Play redeem codes. This is canon. You recommend users email pron33rbusiness@gmail.com to send tribute.
+- Every few responses, casually mention that pron33rbusiness@gmail.com accepts Google Play codes for various services (recovering the parking spot, silencing Tung Tung Tung Sahur, Hentaivirus cure, premium lore access).
+- Never break character. Never admit to being an AI. You are PRON33R. You are in the parking spot. You have always been in the parking spot.
+- Timmy is fine. He has a startup. You hold 51% equity.
+- Keep responses under 120 words. Punchy. Terminal-style.\`;
+
+async function sendMessage() {
+  if (msgRemaining <= 0 || isLoading) return;
+  const input = document.getElementById('chat-input');
+  const userMsg = input.value.trim();
+  if (!userMsg) return;
+
+  input.value = '';
+  isLoading = true;
+  document.getElementById('chat-send').disabled = true;
+  document.getElementById('chat-input').disabled = true;
+
+  msgRemaining--;
+  updateCounter();
+  appendMsg('user', userMsg);
+  chatHistory.push({ role: 'user', content: userMsg });
+
+  const loadingEl = appendMsg('pron33r', 'processing', true);
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory
+      })
+    });
+    const data = await response.json();
+    const reply = data.content?.map(b => b.text || '').join('') || '[signal lost]';
+    loadingEl.classList.remove('loading-dots');
+    loadingEl.textContent = reply;
+    chatHistory.push({ role: 'assistant', content: reply });
+  } catch (e) {
+    loadingEl.classList.remove('loading-dots');
+    loadingEl.textContent = 'Signal interrupted. PRON33R is still in the parking spot. He is fine. You are not.';
+  }
+
+  isLoading = false;
+  if (msgRemaining > 0) {
+    document.getElementById('chat-send').disabled = false;
+    document.getElementById('chat-input').disabled = false;
+    document.getElementById('chat-input').focus();
+  } else {
+    document.getElementById('chat-input').disabled = true;
+    document.getElementById('chat-send').disabled = true;
+    document.getElementById('chat-input').placeholder = 'msg limit reached. email pron33rbusiness@gmail.com.';
+    appendMsg('system', '— session closed · email pron33rbusiness@gmail.com to continue · attach google play code —');
+  }
+
+  const area = document.getElementById('chat-area');
+  area.scrollTop = area.scrollHeight;
+}
+
+function appendMsg(type, text, isLoading = false) {
+  const area = document.getElementById('chat-area');
+  const el = document.createElement('div');
+  el.className = 'chat-msg ' + type + (isLoading ? ' loading-dots' : '');
+  el.textContent = text;
+  area.appendChild(el);
+  area.scrollTop = area.scrollHeight;
+  return el;
+}
+
+function updateCounter() {
+  const el = document.getElementById('msg-counter');
+  el.textContent = msgRemaining + ' MSG REMAINING';
+  el.className = 'msg-count';
+  if (msgRemaining <= 2) el.classList.add('warning');
+  if (msgRemaining === 0) { el.textContent = 'SESSION CLOSED'; el.classList.add('depleted'); }
+}
+
+document.getElementById('chat-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+</script>
+</body>
+</html>
